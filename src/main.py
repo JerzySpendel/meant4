@@ -23,13 +23,10 @@ class WSManager:
         await connection.accept()
         self.connections.append(connection)
 
-    async def disconnect(self, connection):
+    async def disconnect(self, connection: WebSocket):
         self.connections.remove(connection)
+        await connection.close()
 
-    async def disconnect_all(self):
-        for connection in self.connections:
-            await connection.close()
-    
     async def broadcast(self):
         while True:
             message = await self.queue.get()
@@ -46,7 +43,6 @@ async def setup_app(app):
     yield
 
     task_handler.cancel()
-    await ws.disconnect_all()
 
 
 app = FastAPI(lifespan=setup_app)
@@ -73,8 +69,3 @@ async def serve_image(image_filename: str):
 async def faces(connection: WebSocket):
     manager: WSManager = app.extra['wsmanager']
     await manager.connect(connection)
-    try:
-        while True:
-            await connection.receive()
-    except fastapi.WebSocketDisconnect:
-        manager.disconnect(connection)
