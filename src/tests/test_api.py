@@ -1,7 +1,6 @@
 from io import BytesIO
 import pytest
 
-from PIL import Image
 from fastapi.testclient import TestClient
 
 from src.settings import BASE_PATH
@@ -15,7 +14,7 @@ def app() -> TestClient:
 
 @pytest.fixture()
 def sample_file() -> str:
-    file = BASE_PATH / 'images' / 'sample.jpg'
+    file = BASE_PATH / "images" / "sample.jpg"
     file.touch()
     yield file.name
     file.unlink()
@@ -23,7 +22,7 @@ def sample_file() -> str:
 
 @pytest.fixture()
 def sample_image() -> bytes:
-    path = BASE_PATH / 'src' / 'tests' / 'sample.jpg'
+    path = BASE_PATH / "src" / "tests" / "sample.jpg"
     return path.read_bytes()
 
 
@@ -38,10 +37,10 @@ def test_getting_not_existing_image(app):
 
 
 def test_submitting_incorrect_image(app):
-    response = app.post('/image', files={'file': BytesIO(b'asdf')})
+    response = app.post("/image", files={"file": BytesIO(b"asdf")})
     assert response.status_code == 400
 
 
 def test_submitting_correct_image(app, sample_image):
-    response = app.post('/image', files={'file': sample_image})
+    response = app.post("/image", files={"file": sample_image})
     assert response.status_code == 200

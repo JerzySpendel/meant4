@@ -1,7 +1,14 @@
 import asyncio
 import contextlib
 from io import BytesIO
-from fastapi import FastAPI, UploadFile, BackgroundTasks, WebSocket, Request, WebSocketDisconnect
+from fastapi import (
+    FastAPI,
+    UploadFile,
+    BackgroundTasks,
+    WebSocket,
+    Request,
+    WebSocketDisconnect,
+)
 from fastapi.exceptions import HTTPException
 from fastapi.responses import FileResponse, Response
 from PIL import Image, UnidentifiedImageError
@@ -62,10 +69,7 @@ async def image(file: UploadFile, background_tasks: BackgroundTasks, request: Re
 async def serve_image(image_filename: str):
     path = BASE_PATH / "images" / image_filename
     if not path.exists():
-        raise HTTPException(
-            status_code=404,
-            detail={'error': 'No such file'}
-        )
+        raise HTTPException(status_code=404, detail={"error": "No such file"})
     return FileResponse(path=BASE_PATH / "images" / image_filename)
 
 
