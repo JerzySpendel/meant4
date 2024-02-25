@@ -61,6 +61,12 @@ async def image(file: UploadFile, background_tasks: BackgroundTasks, request: Re
 
 @app.get("/image/{image_filename}")
 async def serve_image(image_filename: str):
+    path = BASE_PATH / "images" / image_filename
+    if not path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail={'error': 'No such file'}
+        )
     return FileResponse(path=BASE_PATH / "images" / image_filename)
 
 
