@@ -1,9 +1,7 @@
-import asyncio
 import uuid
 
 import numpy as np
-from io import BytesIO
-from fastapi import UploadFile, Request
+from fastapi import Request
 from face_recognition import face_locations
 from PIL import Image, ImageDraw
 
@@ -24,7 +22,7 @@ async def image_task(image: Image, request: Request):
     await IMAGE_QUEUE.put(url_for_file(uuid_filename, request))
 
 
-def process_image(image: Image) -> list:
+def process_image(image: Image) -> Image:
     for location in face_locations(np.array(image)):
         top, right, bottom, left = location
 

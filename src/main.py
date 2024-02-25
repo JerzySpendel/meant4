@@ -68,3 +68,4 @@ async def serve_image(image_filename: str):
 async def faces(connection: WebSocket):
     manager: WSManager = app.extra["wsmanager"]
     await manager.connect(connection)
+    await connection.receive()
