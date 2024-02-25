@@ -1,9 +1,9 @@
 import asyncio
 import contextlib
 from io import BytesIO
-from fastapi import FastAPI, UploadFile, BackgroundTasks, WebSocket, Request
+from fastapi import FastAPI, UploadFile, BackgroundTasks, WebSocket, Request, WebSocketDisconnect
 from fastapi.exceptions import HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from PIL import Image, UnidentifiedImageError
 
 from src.processing import image_task
@@ -22,7 +22,6 @@ class WSManager:
 
     async def disconnect(self, connection: WebSocket):
         self.connections.remove(connection)
-        await connection.close()
 
     async def broadcast(self):
         while True:
@@ -56,7 +55,7 @@ async def image(file: UploadFile, background_tasks: BackgroundTasks, request: Re
             detail={"error": "Input file doesn't seem to be an image file"},
         )
 
-    return {"size": file}
+    return Response(status_code=204)
 
 
 @app.get("/image/{image_filename}")
@@ -74,4 +73,8 @@ async def serve_image(image_filename: str):
 async def faces(connection: WebSocket):
     manager: WSManager = app.extra["wsmanager"]
     await manager.connect(connection)
-    await connection.receive()
+    try:
+        while True:
+            await connection.receive_text()
+    except WebSocketDisconnect:
+        await manager.disconnect(connection)
