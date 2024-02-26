@@ -1,8 +1,9 @@
+
 import uuid
 
 import numpy as np
-from fastapi import Request
 from face_recognition import face_locations
+from fastapi import Request
 from PIL import Image, ImageDraw
 
 from src.queue import IMAGE_QUEUE

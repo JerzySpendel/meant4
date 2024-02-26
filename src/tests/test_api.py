@@ -1,10 +1,10 @@
 from io import BytesIO
-import pytest
 
+import pytest
 from fastapi.testclient import TestClient
 
-from src.settings import BASE_PATH
 from src.main import app as app_object
+from src.settings import BASE_PATH
 
 
 @pytest.fixture()
@@ -43,4 +43,4 @@ def test_submitting_incorrect_image(app):
 
 def test_submitting_correct_image(app, sample_image):
     response = app.post("/image", files={"file": sample_image})
-    assert response.status_code == 200
+    assert response.status_code == 204

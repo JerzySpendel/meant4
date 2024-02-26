@@ -1,14 +1,9 @@
 import asyncio
 import contextlib
 from io import BytesIO
-from fastapi import (
-    FastAPI,
-    UploadFile,
-    BackgroundTasks,
-    WebSocket,
-    Request,
-    WebSocketDisconnect,
-)
+
+from fastapi import (BackgroundTasks, FastAPI, Request, UploadFile, WebSocket,
+                     WebSocketDisconnect)
 from fastapi.exceptions import HTTPException
 from fastapi.responses import FileResponse, Response
 from PIL import Image, UnidentifiedImageError

@@ -14,28 +14,32 @@ To connect to the websocket use the following URL:
 
 You can also take a look at the API documentation at `http://localhost:8282/docs`
 
+To run tests:
+
+    make test
+
 ### Additional notes on implementation choices
 
 #### Web framework
 
-Choices I was considering were Django and FastAPI.
-Advantages of Django I could see:
+The choices that I considered were Django and FastAPI.
+The advantages of Django that I could see:
 
-* Django's file systems classes and easier file managment
+* Django's file systems classes and easier file management
 
 Advantages of FastAPI
 
 * Less boilerplate code
-* Everything is async and didn't require dedicated tool for background tasks / queues.
+* Everything is async and doesn't require a dedicated tool for background tasks / queues.
 * Easy to implement websockets
 
-Given that I chose FastAPI.
+Given that, I chose FastAPI.
 
 
 #### Package manager
 
-Using `poetry` / `pmd` / `pipenv` when used together with Docker almost always require multi-stage build to do it correctly.
-I decided for a basic `pip` and `requirements.txt` that works and doesn't require lengthy Dockerfile configuration.
+Tools such as `poetry` / `pmd` / `pipenv` when used together with Docker almost always require a multi-stage build to do it correctly.
+I decided for a basic `pip` and `requirements.txt` that works and doesn't require a lengthy Dockerfile configuration.
 
 
 #### Tests
